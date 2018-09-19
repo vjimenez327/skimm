@@ -2,35 +2,52 @@ import db from './index';
 import Sequelize from 'sequelize';
 
 export const Election = db.define('elections', {
-  locationName: {
+  stateName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  stateNameAbbrev: {
     type: Sequelize.STRING
   },
-  locationNameAbbrev: {
-    type: Sequelize.STRING
+  type: {
+    type: Sequelize.STRING,
+    allowNull: false
   },
-  locationType: {
-    type: Sequelize.STRING
-  },
-  electionType: {
-    type: Sequelize.STRING
-  },
-  electionTypeDetail: {
+  TypeDetail: {
     type: Sequelize.STRING
   },
   electionDate: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    isDate: true,
+    isAfter: Sequelize.NOW,
+    allowNull: false
   },
-  electionDayRegistrationAvail: {
+  DayRegistrationAvail: {
     type: Sequelize.BOOLEAN
   },
   additionalInfo: {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT
   },
   url: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    isUrl: true
   }
 
 });
+
+//Possible Useful Methods
+
+Election.prototype.stateCheck = () => {
+  try{
+    if (isValidState(this.stateName) === undefined){
+      return this.stateName;
+    } 
+  } catch (err) {
+    console.log(`${err} is not a state`);
+  } 
+};
+
+Election.beforeCreate(stateCheck);
 
 export default Election;
 

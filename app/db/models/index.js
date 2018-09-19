@@ -1,6 +1,6 @@
-import Dates from './dates';
+import Dates from './deadlines';
 import Elections from './elections';
 
- Dates.belongsTo(Elections);
- Elections.hasMany(Dates);
+ Dates.belongsTo(Elections, { foreignKey: { allowNull: false }});
+ Elections.hasMany(Dates, { foreignKey: { allowNull: false }});
 
